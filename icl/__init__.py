@@ -1,0 +1,1 @@
+#empty init file to make my write prompts script importable
