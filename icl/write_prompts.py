@@ -11,13 +11,11 @@ Function to build the prompt telling the model to use the dependncy parse info
 
 '''
 #sort out the translation direction and string
-def make_prompt(raw_source, parsed_source, source_lang_code, target_lang_code):
+def make_prompt(raw_source, parsed_source, source_lang_code, target_lang_code, raw_target):
     if source_lang_code == 'en' and target_lang_code == 'fr':
-        raw_target = parsed_source["en_raw"]
         source_lang = 'English'
         target_lang = 'French'
     elif source_lang_code == 'fr' and target_lang_code == 'en':
-        raw_target = parsed_source["fr_raw"]
         source_lang = "French"
         target_lang = "English"
     else:
@@ -41,5 +39,5 @@ def generate_prompt_dataset(input_file, output_file, source_lang_code, target_la
     with open(input_file, 'r') as in_file, open(output_file, 'w') as out_file:
         for line in in_file:
             data = json.loads(line)
-            prompt = make_prompt(data[f"{source_lang_code}_raw"], data[f"{source_lang_code}_parsed"], source_lang_code, target_lang_code)
+            prompt = make_prompt(data[f"{source_lang_code}_raw"], data[f"{source_lang_code}_parse"], source_lang_code, target_lang_code, data[f"{target_lang_code}_raw"])
             out_file.write(json.dumps(prompt) + '\n\n')
